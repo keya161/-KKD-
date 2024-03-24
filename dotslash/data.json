@@ -1,0 +1,22 @@
+{
+  "topic": "Dynamic Programming and Optimization",
+  "question_name": "Coin Change Problem",
+  "question": "Given a value V (amount) and an array of coins C (denominations), find the minimum number of coins required to make exact change for V using the available coins in C.",
+  "difficulty_level": 2,
+  "function": "\ndef coinChange(amount, coins):\n  # This function finds the minimum number of coins to make change for a given amount using available coins.\n",
+  "test_cases": [
+    {
+      "input": "coinChange(10, [1, 5, 7])",
+      "expected_output": 2
+    },
+    {
+      "input": "coinChange(11, [1, 5])",
+      "expected_output": 3
+    },
+    {
+      "input": "coinChange(0, [1, 2])",
+      "expected_output": 0
+    }
+  ]
+}
+

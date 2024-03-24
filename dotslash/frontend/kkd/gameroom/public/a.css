@@ -1,0 +1,66 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #8a2be2; /* Purple background color */
+    font-family: Arial, sans-serif; /* Fallback font */
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    backdrop-filter: blur(10px); /* Blur effect */
+}
+
+.container h1 {
+    color: white; /* White text color */
+    text-decoration: underline; /* Underline for title */
+}
+
+button {
+    background-color: #4b0082; /* Dark purple button color */
+    color: white; /* White text color */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #6a5acd; /* Lighter purple on hover */
+}
+
+input[type="text"] {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+#playerIds {
+    color: white; /* White text color for player IDs */
+}
+
+#roomId {
+    color: white; /* White text color for room ID */
+}
+
+#userList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.board {
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    margin-top: 20px;
+}
+
+.board button {
+    margin-top: 10px;
+}

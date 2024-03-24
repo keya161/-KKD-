@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Room</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #8a2be2; /* Purple background color */
+            font-family: Arial, sans-serif; /* Fallback font */
+        }
+        
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px; /* Rounded corners */
+            backdrop-filter: blur(10px); /* Blur effect */
+        }
+        
+        .container h1 {
+            color: white; /* White text color */
+            text-decoration: underline; /* Underline for title */
+        }
+        
+        button {
+            background-color: #4b0082; /* Dark purple button color */
+            color: white; /* White text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #6a5acd; /* Lighter purple on hover */
+        }
+        
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        
+        #playerIds {
+            color: white; /* White text color for player IDs */
+        }
+        
+        #roomId {
+            color: white; /* White text color for room ID */
+        }
+        
+        #userList {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .board {
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+            backdrop-filter: blur(10px); /* Blur effect */
+            padding: 20px;
+            border-radius: 10px; /* Rounded corners */
+            margin-top: 20px;
+        }
+        
+        .board button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button onclick="createRoom()">Create Room</button>
+    </div>
+    <div>
+        <input type="text" id="roomIdInput" placeholder="Enter Room ID">
+        <button onclick="joinRoom()">Join Room</button>
+    </div>
+
+    <!-- Display area for player IDs -->
+    <div id="playerIds"></div>
+    <div class="board">
+        <h1 class="leaderboard">Connected Users:</h1>
+        <ul id="userList"></ul>
+        <button id="spinWheelButton">Spin Wheel</button>
+        <div id="roomId">Room ID: </div> <!-- Room ID display -->
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Get the username from the URL
+        const username = getQueryParam('username');
+        if (username) {
+            // Do something with the username (e.g., display it on the page)
+            console.log('Username:', username);
+        }
+        // Function to display users
+        function displayUsers(users) {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = ''; // Clear existing list
+
+            users.forEach(user => {
+                const listItem = document.createElement('li');
+                listItem.textContent = user;
+                userList.appendChild(listItem);
+            });
+        }
+
+        // Event listener for the "Spin Wheel" button click
+        document.getElementById('spinWheelButton').addEventListener('click', () => {
+            window.location.href = 'http://localhost:3000/spinwheel'; // Navigate to the spinwheel page
+        });
+
+        // Socket event to receive user list
+        socket.on('allPlayers', users => {
+            displayUsers(users);
+        });
+    
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('roomCreated', roomId => {
+            console.log('Room created with ID:', roomId);
+            const roomIdDisplay = document.getElementById('roomId');
+            roomIdDisplay.textContent = 'Room ID: ' + roomId;
+            // Send roomId to friends or handle it as needed
+        });
+        
+        socket.on('roomFull', () => {
+            console.log('Room is full');
+            // You may want to display a message to the user indicating that the room is full
+        });
+
+        socket.on('playerJoined', playerId => {
+            console.log('Player joined:', playerId);
+            displayPlayerId(playerId); // Call a function to display playerId
+            
+        });
+
+        socket.on('playerLeft', playerId => {
+            console.log('Player left:', playerId);
+        });
+        const fs = require('fs');
+        const filePath="/Users/kriti.bharadwaj03/dotslash/frontend/kkd/src/room.json";
+        // Function to read the JSON file
+        const readJSONFile = (filePath) => {
+            try {
+                const data = fs.readFileSync(filePath, 'utf8');
+                return JSON.parse(data);
+            } catch (error) {
+                console.error('Error reading JSON file:', error);
+                return {}; // Return empty object if there's an error
+            }
+        };
+        
+        // Function to write to the JSON file
+        const writeJSONFile = (filePath, data) => {
+            try {
+                fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+                console.log('Data has been written to the file successfully.');
+            } catch (error) {
+                console.error('Error writing to JSON file:', error);
+            }
+        };
+        
+        // Function to update user data in the JSON file
+        const updateUserData = (roomId, newData) => {
+            const filePath = 'userData.json'; // Path to your JSON file
+            let userData = readJSONFile(filePath);
+        
+            // Check if room ID exists in userData, if not create it
+            if (!userData[roomId]) {
+                userData[roomId] = {
+                    difficultyLevel: '', // Initialize difficulty level
+                    users: {} // Initialize users object
+                };
+            }
+        
+            // Update common difficulty level
+            userData[roomId].difficultyLevel = newData.difficultyLevel;
+        
+            // Write updated userData to the JSON file
+            writeJSONFile(filePath, userData);
+        };
+        
+        // Example usage:
+        const roomId = 'room123';
+        const newData = {
+            difficultyLevel: 'Hard'
+        };
+        
+        updateUserData(roomId, newData);
+        
+
+        // Function to create a room
+        function createRoom() {
+            socket.emit('createRoom');
+        }
+
+        // Function to join a room
+        function joinRoom() {
+            const roomId = document.getElementById('roomIdInput').value;
+            socket.emit('joinRoom', { roomId: roomId, username: username });
+            
+        }
+        // Listen for the 'updatePlayerList' event from the server
+/*socket.on('updatePlayerList', usernames => {
+    // Clear previous player list
+    const playerList = document.getElementById('playerList');
+    playerList.innerHTML = '';
+
+    // Update UI to display the updated player list
+    usernames.forEach(username => {
+        const playerItem = document.createElement('li');
+        playerItem.textContent = username;
+        playerList.appendChild(playerItem);
+    });
+});*/ 
+
+// Function to display player ID
+// Function to display player ID
+// Function to display player ID
+/* function displayPlayerId(playerId) {
+    //const player = players[playerId]; // Get the player object using the playerId 
+        const playerIdsDiv = document.getElementById('playerIds');
+        const playerElement = document.createElement('div');
+        playerElement.textContent = 'Player ID: ' + playerId.username; // Access the username property
+        playerIdsDiv.appendChild(playerElement);
+} */
+
+
+
+// Listen for the 'navigateToSpinWheel' event from the server
+socket.on('navigateToSpinWheel', () => {
+    window.location.href = 'http://localhost:3000/spinwheel'; // Redirect to '/spinwheel' route
+});
+
+    </script>
+</body>
+</html>

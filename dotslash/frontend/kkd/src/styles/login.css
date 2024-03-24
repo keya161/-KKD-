@@ -1,0 +1,84 @@
+body {
+  background-image: url('backdrop.jpeg'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* General Styles */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px; /* Set the maximum width */
+  margin: auto; /* Center align horizontally */
+  height: 200px; /* Set a specific height */
+  font-family: sans-serif;
+  backdrop-filter: blur(10px);  
+}
+
+  
+  .form {
+    padding: 20px;
+    border-radius: 5px;
+    /* background-color: #f5f5f9;  */
+    
+    width: 350px;
+  }
+  
+  /* Form Title */
+  h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #9a72ac; /* Darker purple */
+  }
+  
+  /* Divider */
+  .ui.divider {
+    margin: 15px 0;
+    border-top: 1px solid #ddd;
+  }
+  
+  /* Form Fields */
+  .field {
+    margin-bottom: 10px;
+    width: 320px;
+  }
+  
+  .field label {
+    display: block;
+    margin-bottom: 5px;
+    color: #9a72ac; /* Darker purple */
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  /* Error Messages */
+  p {
+    color: #c02942; /* Dark reddish purple */
+    font-size: 12px;
+    margin: 0;
+  }
+  
+  /* Submit Button */
+  button {
+    background-color: #7f5a80; /* Medium purple */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #66476b; /* Darker purple on hover */
+  }
+  

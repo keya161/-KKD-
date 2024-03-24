@@ -1,0 +1,19 @@
+{
+        "roomId": 10,
+        "players": [
+          {
+            "username": "player1",
+            "points": 100,
+            "perks": [
+              {
+                "name": "Double Jump"
+              }
+            ]
+          },
+          {
+            "username": "player2",
+            "points": 50,
+            "perks": []
+          }
+        ]
+      }
